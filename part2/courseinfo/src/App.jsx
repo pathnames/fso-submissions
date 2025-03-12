@@ -1,47 +1,5 @@
-const Header = ({ name }) => {
-  return (
-    <>
-      <h1>{name}</h1>
-    </>
-  );
-}
+import Course from './Course'
 
-const Content = ({ parts }) => {
-  return (
-    <>
-      {parts.map(course =>
-        <Part key={course.id} id={course.id} name={course.name} exercises={course.exercises} />
-      )}
-    </>
-  );
-}
-
-const Part = ({ name, exercises }) => {
-  return (
-    <>
-      <li>{name} {exercises}</li>
-    </>
-  );
-}
-
-const Course = ({ name, parts }) => {
-  return (
-    <>
-      <Header name={name} />
-      <Content parts={parts} />
-      <Total parts={parts} />
-    </>
-  );
-}
-
-const Total = ({ parts }) => {
-  const totalSum = parts.reduce((accumulator, currentValue) => accumulator + currentValue.exercises, 0)
-  return (
-    <>
-      <h4>total of {totalSum} exercises</h4>
-    </>
-  )
-}
 const App = () => {
   const courses = [
     {
@@ -69,7 +27,7 @@ const App = () => {
           id: 4
         }
       ]
-    }, 
+    },
     {
       name: 'Node.js',
       id: 2,
@@ -90,9 +48,9 @@ const App = () => {
 
   return (
     <>
-    {courses.map(course => 
-      <Course id={course.parts.id} name={course.name} parts={course.parts}/>
-    )}
+      {courses.map(course =>
+        <Course key={course.id} name={course.name} parts={course.parts} />
+      )}
     </>
   )
 }
