@@ -13,17 +13,21 @@ const App = () => {
   const handleFilterChange = (event) => setFilter(event.target.value)
 
   const handleAddPerson = (event) => {
-    console.log("Here (1)")
     event.preventDefault()
     const newPerson = { 
       name: newName, 
-      number: newNumber, 
-      id: persons.length + 1
+      number: newNumber
     }
 
     if (!persons.some(person => person.name === newName)) {
-      console.log("Here (2)")
-      setPersons(persons.concat(newPerson))
+      axios.
+        post('http://localhost:3001/persons', newPerson)
+        .then(response => {
+          setPersons([...persons, response.data])
+        })
+        .catch(error => {
+          console.log(error)
+        })
     } else {
       alert(`${newName} is already in the phonebook`)
     }
