@@ -15,12 +15,26 @@ const App = () => {
 
   const handleAddPerson = (event) => {
     event.preventDefault()
-    const newPerson = { 
-      name: newName, 
-      number: newNumber
-    }
+    const existingPerson = persons.find(person => person.name === newName)
+    const newPerson = { name: newName, number: newNumber }
 
-    if (!persons.some(person => person.name === newName)) {
+    if (existingPerson) {
+      const confirmUpdate = window.confirm(
+        `${newName} is already in the phonebook. Replace the old number with a new one?`
+      )
+      if (confirmUpdate) {
+        personService
+          .update(existingPerson.id, newPerson)
+          .then(response => {
+            setPersons(persons.map(person => 
+              person.id !== existingPerson.id ? person : response.data
+            ))
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    } else {
       personService
         .create(newPerson)
         .then(response => {
@@ -29,28 +43,33 @@ const App = () => {
         .catch(error => {
           console.log(error)
         })
-    } else {
-      alert(`${newName} is already in the phonebook`)
     }
 
     setNewName('')
     setNewNumber('')
   }
+
   useEffect(() => {
     personService
       .getAll()
       .then(response => {
         setPersons(response.data)
       })
-
   }, [])
+
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter filter={filter} handleFilterChange={handleFilterChange}/>
-      <PersonForm newName={newName} newNumber={newNumber} setNewName={setNewName} setNewNumber={setNewNumber} handleAddPerson={handleAddPerson} />
+      <Filter filter={filter} handleFilterChange={handleFilterChange} />
+      <PersonForm 
+        newName={newName} 
+        newNumber={newNumber} 
+        setNewName={setNewName} 
+        setNewNumber={setNewNumber} 
+        handleAddPerson={handleAddPerson} 
+      />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter} setPersons={setPersons}/>
+      <Persons persons={persons} filter={filter} setPersons={setPersons} />
     </div>
   )
 }
