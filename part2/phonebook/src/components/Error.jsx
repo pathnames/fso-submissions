@@ -1,7 +1,7 @@
-const Notification = ({ message }) => {
+const Error = ({ message }) => {
     if (message === null) return null
-    const successStyle = {
-        color: 'green',
+    const errorStyle = {
+        color: 'red',
         backgroundColor: 'lightgrey',
         fontSize: '20px',
         borderStyle: 'solid',
@@ -11,11 +11,11 @@ const Notification = ({ message }) => {
     }
     return (
         <>
-            <div style={successStyle}>
+            <div style={errorStyle}>
                 {message}
             </div>
         </>
     )
 }
 
-export default Notification
+export default Error
