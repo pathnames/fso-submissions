@@ -4,12 +4,14 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null)
 
   const handleFilterChange = (event) => setFilter(event.target.value)
 
@@ -29,7 +31,11 @@ const App = () => {
             setPersons(persons.map(person => 
               person.id !== existingPerson.id ? person : response.data
             ))
-          })
+            setSuccessMessage(`Changed number for ${newPerson.name}`)
+            setTimeout(() => {          
+              setSuccessMessage(null)        
+              }, 5000)          
+            })
           .catch(error => {
             console.log(error)
           })
@@ -39,6 +45,10 @@ const App = () => {
         .create(newPerson)
         .then(response => {
           setPersons([...persons, response.data])
+          setSuccessMessage(`Added ${newPerson.name}`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
         })
         .catch(error => {
           console.log(error)
@@ -60,6 +70,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={successMessage}/>
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <PersonForm 
         newName={newName} 
