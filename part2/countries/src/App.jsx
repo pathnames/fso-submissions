@@ -20,7 +20,7 @@ const App = () => {
         console.error(error)
       })
   }, [])
-
+  
   return (
     <div>
       find countries <input value={search} onChange={searchChange}/> 
