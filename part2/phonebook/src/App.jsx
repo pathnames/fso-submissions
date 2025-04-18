@@ -30,14 +30,14 @@ const App = () => {
         personService
           .update(existingPerson.id, newPerson)
           .then(response => {
-            setPersons(persons.map(person => 
+            setPersons(persons.map(person =>
               person.id !== existingPerson.id ? person : response.data
             ))
             setnotificationMessage(`Changed number for ${newPerson.name}`)
-            setTimeout(() => {          
-              setnotificationMessage(null)        
-              }, 5000)          
-            })
+            setTimeout(() => {
+              setnotificationMessage(null)
+            }, 5000)
+          })
           .catch(error => {
             setErrorMessage(`Information of ${newPerson.name} already deleted from server.`)
             setTimeout(() => {
@@ -56,7 +56,7 @@ const App = () => {
           }, 5000)
         })
         .catch(error => {
-          setErrorMessage(`Failed to create ${newPerson.name}.`)
+          setErrorMessage(error.response.data.error)
           setTimeout(() => {
             setErrorMessage(null)
           }, 5000)
@@ -78,15 +78,15 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notificationMessage}/>
+      <Notification message={notificationMessage} />
       <Error message={errorMessage} />
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
-      <PersonForm 
-        newName={newName} 
-        newNumber={newNumber} 
-        setNewName={setNewName} 
-        setNewNumber={setNewNumber} 
-        handleAddPerson={handleAddPerson} 
+      <PersonForm
+        newName={newName}
+        newNumber={newNumber}
+        setNewName={setNewName}
+        setNewNumber={setNewNumber}
+        handleAddPerson={handleAddPerson}
       />
       <h2>Numbers</h2>
       <Persons persons={persons} filter={filter} setPersons={setPersons} />
