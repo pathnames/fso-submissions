@@ -94,4 +94,47 @@ describe('favoriteBlog returns the blog with most likes', () => {
         __v: 0
     }
     assert.strictEqual(expectedResult.likes, listHelper.favoriteBlog(blogs).likes)
+
+    test('mostBlogs returns the author with the most blog posts', () => {
+        const blogs = [
+          {
+            title: "Post A",
+            author: "Alice",
+            url: "http://example.com/a",
+            likes: 5
+          },
+          {
+            title: "Post B",
+            author: "Bob",
+            url: "http://example.com/b",
+            likes: 3
+          },
+          {
+            title: "Post C",
+            author: "Alice",
+            url: "http://example.com/c",
+            likes: 7
+          },
+          {
+            title: "Post D",
+            author: "Bob",
+            url: "http://example.com/d",
+            likes: 2
+          },
+          {
+            title: "Post E",
+            author: "Alice",
+            url: "http://example.com/e",
+            likes: 10
+          }
+        ]
+      
+        const result = listHelper.mostBlogs(blogs)
+        const expected = {
+          author: "Alice",
+          blogs: 3
+        }
+      
+        assert.deepStrictEqual(result, expected)
+      })
 })
