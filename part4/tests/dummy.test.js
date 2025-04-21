@@ -77,7 +77,7 @@ describe('total likes', () => {
         assert.strictEqual(result, 5)
     })
 
-  
+
     test('totalLikes calculates the correct number of likes for multiple blogs', () => {
         const result = listHelper.totalLikes(blogs)
         assert.strictEqual(result, 36)
@@ -97,44 +97,83 @@ describe('favoriteBlog returns the blog with most likes', () => {
 
     test('mostBlogs returns the author with the most blog posts', () => {
         const blogs = [
-          {
-            title: "Post A",
-            author: "Alice",
-            url: "http://example.com/a",
-            likes: 5
-          },
-          {
-            title: "Post B",
-            author: "Bob",
-            url: "http://example.com/b",
-            likes: 3
-          },
-          {
-            title: "Post C",
-            author: "Alice",
-            url: "http://example.com/c",
-            likes: 7
-          },
-          {
-            title: "Post D",
-            author: "Bob",
-            url: "http://example.com/d",
-            likes: 2
-          },
-          {
-            title: "Post E",
-            author: "Alice",
-            url: "http://example.com/e",
-            likes: 10
-          }
+            {
+                title: "Post A",
+                author: "Alice",
+                url: "http://example.com/a",
+                likes: 5
+            },
+            {
+                title: "Post B",
+                author: "Bob",
+                url: "http://example.com/b",
+                likes: 3
+            },
+            {
+                title: "Post C",
+                author: "Alice",
+                url: "http://example.com/c",
+                likes: 7
+            },
+            {
+                title: "Post D",
+                author: "Bob",
+                url: "http://example.com/d",
+                likes: 2
+            },
+            {
+                title: "Post E",
+                author: "Alice",
+                url: "http://example.com/e",
+                likes: 10
+            }
         ]
-      
+
         const result = listHelper.mostBlogs(blogs)
         const expected = {
-          author: "Alice",
-          blogs: 3
+            author: "Alice",
+            blogs: 3
         }
-      
+
         assert.deepStrictEqual(result, expected)
-      })
+    })
+
+
+    test('mostLikes returns the author with highest total likes', () => {
+        const blogs = [
+            {
+                title: "Post A",
+                author: "Alice",
+                likes: 5
+            },
+            {
+                title: "Post B",
+                author: "Bob",
+                likes: 3
+            },
+            {
+                title: "Post C",
+                author: "Alice",
+                likes: 7
+            },
+            {
+                title: "Post D",
+                author: "Bob",
+                likes: 2
+            },
+            {
+                title: "Post E",
+                author: "Alice",
+                likes: 10
+            }
+        ]
+
+        const result = listHelper.mostLikes(blogs)
+        const expected = {
+            author: "Alice",
+            likes: 22
+        }
+
+        assert.deepStrictEqual(result, expected)
+    })
 })
