@@ -6,8 +6,19 @@ const app = require('../app')
 const Blog = require('../models/blog')
 const api = supertest(app)
 
+let blogToDelete
+
 beforeEach(async () => {
     await Blog.deleteMany({})
+
+    const blog = new Blog({
+        title: 'Blog to be deleted',
+        author: 'Test Author',
+        url: 'http://example.com',
+        likes: 5
+    })
+
+    blogToDelete = await blog.save()
 })
 
 test('blogs are returned as json', async () => {
@@ -70,6 +81,15 @@ test('fails with status 400 if url is missing', async () => {
         .expect(400)
 
     assert.strictEqual(result.status, 400)
+})
+
+test('deletes a blog successfully', async () => {
+    await api
+        .delete(`/api/blogs/${blogToDelete._id}`)
+        .expect(204)
+
+    const blogsAfter = await Blog.find({})
+    assert.strictEqual(blogsAfter.length, 0)
 })
 
 after(async () => {
