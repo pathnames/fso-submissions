@@ -8,16 +8,8 @@ const api = supertest(app)
 
 beforeEach(async () => {
     await Blog.deleteMany({})
-
-    const blog = new Blog({
-        title: 'Test Blog',
-        author: 'Tester',
-        url: 'http://example.com',
-        likes: 5
-    })
-
-    await blog.save()
 })
+
 test('blogs are returned as json', async () => {
     await api
         .get('/api/blogs')
@@ -34,6 +26,21 @@ test('unique identifier is named id', async () => {
     })
 })
 
+test('if likes property is missing from request, it defaults to 0', async () => {
+    const newBlog = {
+        title: 'Blog with no likes',
+        author: 'No Likes Author',
+        url: 'http://nolikes.com'
+    }
+
+    const response = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    assert.strictEqual(response.body.likes, 0)
+})
 
 after(async () => {
     await mongoose.connection.close()
