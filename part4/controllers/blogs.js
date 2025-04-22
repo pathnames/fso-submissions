@@ -2,16 +2,20 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
 blogsRouter.get('', async (request, response) => {
-    const blogs = await Blog.find({})
-    return response.json(blogs)
+  const blogs = await Blog.find({})
+  return response.json(blogs)
 })
 
-blogsRouter.post('', (request, response) => {
-    const blog = new Blog(request.body)
+blogsRouter.post('', async (request, response) => {
+  const { title, url } = request.body
 
-    blog.save().then((result) => {
-        response.status(201).json(result)
-    })
+  if (!title || !url) {
+    return response.status(400).json({ error: 'title and url are required' })
+  }
+
+  const blog = new Blog(request.body)
+  const savedBlog = await blog.save()
+  response.status(201).json(savedBlog)
 })
 
 module.exports = blogsRouter
