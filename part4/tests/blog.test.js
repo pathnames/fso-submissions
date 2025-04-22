@@ -92,6 +92,21 @@ test('deletes a blog successfully', async () => {
     assert.strictEqual(blogsAfter.length, 0)
 })
 
+test('updates likes of a blog successfully', async () => {
+    const updatedLikes = { likes: 999 }
+
+    const response = await api
+        .put(`/api/blogs/${blogToDelete._id}`)
+        .send(updatedLikes)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+    assert.strictEqual(response.body.likes, 999)
+
+    const blogInDb = await Blog.findById(blogToDelete._id)
+    assert.strictEqual(blogInDb.likes, 999)
+})
+
 after(async () => {
     await mongoose.connection.close()
 })
